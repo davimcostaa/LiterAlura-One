@@ -16,7 +16,7 @@ public class Livro {
     private String titulo;
 
     @Enumerated(EnumType.STRING)
-    private Linguagem linguagens;
+    private Linguagem linguagem;
     private String quantidadeDownload;
 
     @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -40,12 +40,12 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public Linguagem getLinguagens() {
-        return linguagens;
+    public Linguagem getLinguagem() {
+        return linguagem;
     }
 
-    public void setLinguagens(Linguagem linguagens) {
-        this.linguagens = linguagens;
+    public void setLinguagem(Linguagem linguagem) {
+        this.linguagem = linguagem;
     }
 
     public String getQuantidadeDownload() {
@@ -67,7 +67,7 @@ public class Livro {
     public Livro(DadosLivro dadosLivro) {
         this.titulo = dadosLivro.titulo();
         this.quantidadeDownload = dadosLivro.quantidadeDownload();
-        this.linguagens = Linguagem.valueOf(dadosLivro.linguagens().get(0));
+        this.linguagem = Linguagem.valueOf(dadosLivro.linguagens().get(0));
     }
 
     @Override
@@ -75,7 +75,8 @@ public class Livro {
         return "----Livro---- \n" +
                 "Titulo: " + titulo + "\n" +
                 "Autor: " + getAutores().get(0).getNome() + "\n" +
-                "Linguagem: " + linguagens + "\n" +
+                "Linguagem: " + linguagem + "\n" +
+                "Quantidade de donwload : " + quantidadeDownload + "\n" +
                 "----------"
                 ;
     }

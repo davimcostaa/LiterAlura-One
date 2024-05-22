@@ -33,6 +33,8 @@ public class Principal {
                     3 - Buscar autores registrados
                     4 - Buscar autores vivos em determinado ano
                     5 - Buscar livros por idioma
+                    6 - Top 10 livros mais baixados
+                    7 - Buscar autor pelo nome
                     0 - Sair                                 
                     """;
 
@@ -56,6 +58,10 @@ public class Principal {
                 case 5:
                     buscarLivrosPorIdioma();
                     break;
+                case 6:
+                    buscarTop10MaisBaixados();
+                case 7:
+                    buscarAutorPeloNome();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -65,17 +71,36 @@ public class Principal {
         }
     }
 
+    private void buscarAutorPeloNome() {
+        System.out.println("Digite um nome para busca: ");
+        var nomeAutor = leitura.nextLine();
+        List<Autor> autores = repositorio.buscarAutorPeloNome(nomeAutor);
+        if(autores.isEmpty()) {
+            System.out.println("Nenhum autor encontrado.");
+        }
+        autores.forEach(System.out::println);
+
+    }
+
+    private void buscarTop10MaisBaixados() {
+        List<Livro> livrosMaisBaixados = repositorio.retornarTop10MaisBaixados();
+        livrosMaisBaixados.forEach(System.out::println);
+    }
+
     private void buscarLivrosPorIdioma() {
         System.out.println("Escolha um idioma: ");
-        Linguagem linguagem = Linguagem.fromString(leitura.nextLine());
+        try{
+            Linguagem linguagem = Linguagem.fromString(leitura.nextLine());
+            var livrosEncontrados = repositorio.findByLinguagem(linguagem);
 
-        var livrosEncontrados = repositorio.findByLinguagens(linguagem);
-
-        if(livrosEncontrados.isPresent()) {
-            var livros = livrosEncontrados.get();
-            livros.forEach(System.out::println);
-        } else {
-            System.out.println("Livro não encontrada!");
+            if(livrosEncontrados.isPresent()) {
+                var livros = livrosEncontrados.get();
+                livros.forEach(System.out::println);
+            } else {
+                System.out.println("Livro não encontrada!");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
         }
     }
 
